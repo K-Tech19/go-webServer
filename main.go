@@ -7,6 +7,27 @@ import (
 )
 
 
+func formHandler(w http.ResponseWriter, r *http.Request){
+
+	if err := r.ParseForm(); err != nil{
+		fmt.Fprintf(w , "ParseForm() err: %v", err)
+		return
+	}
+
+	fmt.Fprintf(w , "POST request successful\n")
+
+	name := r.FormValue("name")
+	address := r.FormValue("address")
+	email := r.FormValue("email")
+	phoneNumber  := r.FormValue("phone_number") 
+
+	fmt.Fprintf(w, "Name = %s\n", name)
+	fmt.Fprintf(w, "Address = %s\n", address)
+	fmt.Fprintf(w, "email = %s\n", email)
+	fmt.Fprintf(w, "Phone Number = %v\n", phoneNumber)
+}
+
+
 func helloHandler(w http.ResponseWriter, r *http.Request){ // "*" start is pointing to the request. THis function usually have two things(parameters) ("w" and "r"). W is your response, while R is our request. 
  
 	//checking to see if our request url path is NOT our /hello route then we will shoot an error message 404 status
@@ -20,7 +41,6 @@ func helloHandler(w http.ResponseWriter, r *http.Request){ // "*" start is point
 		http.Error(w, "method is not supported", http.StatusNotFound)
 		return  // returns to running the message
 	}
-
 
 	fmt.Fprintf(w, "hello")
 } 
@@ -40,7 +60,5 @@ func main(){
 	if err:= http.ListenAndServe(":8000",nil); err !=nil { // creates the server heart of the software
 			log.Fatal(err) // Fatal() func found inside the log import
 	}  
-
-
 
 }
